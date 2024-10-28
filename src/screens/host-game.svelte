@@ -1,12 +1,9 @@
 <script>
   import { fade } from 'svelte/transition';
-  import { navigate } from 'svelte-routing';
   import { shuffle, generateId, url } from '../utils';
   import { blackCards } from '../assets/db';
+  import { route } from '../navigation.svelte';
   let seed = $state(generateId());
-  let loading = $state(false);
-  let black_card = $state(shuffle(blackCards, seed));
-
   let number_of_players = $state(undefined);
   let my_index = $state(undefined);
 
@@ -23,7 +20,7 @@
   });
 </script>
 
-<div class="container" transition:fade>
+<div class="container" in:fade>
   <div>
     <h1>Host a game</h1>
     <button id="id-card" onclick={() => navigator.clipboard.writeText(seed)}>
@@ -56,24 +53,16 @@
   <div class="button-container">
     <button
       onclick={() => {
-        loading = true;
         localStorage.setItem('turn-index', '0');
-        fetch(
-          url +
-            `━ Black card ━━━━━━━━ %0A%0A ${black_card[0].text} %0A%0A ━━━━━━━━━`
-        )
-          .then((j) => j.json())
-          .then(() => {
-            loading = false;
-            navigate('/game');
-          })
-          .catch((err) => console.log(err));
+        localStorage.setItem('my-index', JSON.stringify(my_index));
+        localStorage.setItem('game-seed', seed);
+        route.value = 'game';
       }}
-      disabled={loading || !number_of_players || !my_index}
+      disabled={!number_of_players || !my_index}
     >
-      {loading ? 'Loading...' : 'Start game'}
+      Start game
     </button>
-    <button onclick={() => navigate('/')}>back</button>
+    <button onclick={() => (route.value = 'home')}>back</button>
   </div>
 </div>
 
@@ -100,6 +89,9 @@
     display: flex;
     width: 100%;
     justify-content: space-around;
+    gap: 0.5em;
+    align-items: center;
+    flex-wrap: wrap;
   }
   .numbers-text {
     text-align: center;

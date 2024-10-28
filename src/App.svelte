@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
 
-  import { Router, Route } from 'svelte-routing';
+  import { route } from './navigation.svelte';
   import { fade } from 'svelte/transition';
   import Home from './screens/home.svelte';
   import HostGame from './screens/host-game.svelte';
@@ -18,12 +18,15 @@
   />
 </svelte:head>
 <main>
-  <Router>
-    <Route path="/" component={Home}></Route>
-    <Route path="/host-game/" component={HostGame}></Route>
-    <Route path="/join-game" component={JoinGame}></Route>
-    <Route path="/game" component={Game}></Route>
-  </Router>
+  {#if route.value == 'home'}
+    <Home />
+  {:else if route.value == 'host-game'}
+    <HostGame />
+  {:else if route.value == 'join-game'}
+    <JoinGame />
+  {:else if route.value == 'game'}
+    <Game />
+  {/if}
 </main>
 
 <style>

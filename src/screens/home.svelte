@@ -1,5 +1,5 @@
 <script>
-  import { navigate } from 'svelte-routing';
+  import { route } from '../navigation.svelte';
 </script>
 
 <div class="main-container">
@@ -11,8 +11,14 @@
   </h1>
 
   <div id="footer">
-    <button onclick={() => navigate('/host-game')}>New Game</button>
-    <button onclick={() => navigate('/join-game')}>Join Game</button>
+    <button
+      onclick={() => {
+        route.value = 'host-game';
+      }}
+    >
+      New Game
+    </button>
+    <button onclick={() => (route.value = 'join-game')}>Join Game</button>
     <span id="footer-text">Made with 💖</span>
   </div>
 </div>

@@ -1,23 +1,17 @@
 <script>
   // @ts-nocheck
-  import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import { blackCards, whiteCards } from '../assets/db';
   import { shuffle, split, url } from '../utils';
+  import { onMount } from 'svelte';
 
-  function getNextItem() {
-    const item = array[index % array.length];
-    return item;
-  }
-  //! todo handle judge should not see any cards in his turn
-  //
   let turn = $state(parseInt(localStorage.getItem('turn-index') ?? '0'));
   let players = Array.from(
     { length: parseInt(localStorage.getItem('number-of-players')) ?? 2 },
     (_, index) => index + 1
   );
   let seed = localStorage.getItem('game-seed');
-  let my_index = localStorage.getItem('my-index') ?? 0;
+  let my_index = parseInt(localStorage.getItem('my-index'));
   let loading = $state(false);
   //
   const all_cards = split(shuffle(whiteCards, seed), players.length);
@@ -27,7 +21,7 @@
 
   $effect(() => {
     if (players[turn % players.length] == my_index) {
-      button_text = 'Next Turn';
+      button_text = 'Send black card';
     }
     if (selected.length > 0) {
       button_text = 'Send Card';
@@ -37,9 +31,8 @@
 
 <div class="game-container">
   <div>
-    <p style="text-align:start; margin:0;">Turn: {turn + 1}</p>
     {#if players[turn % players.length] == my_index}
-      <p style="text-align:center; font-size:2em">
+      <p style="text-align:center; font-size:2em" in:fade>
         You are the judge, go judge people
       </p>
     {:else}
@@ -68,7 +61,8 @@
   <div>
     <button
       style="margin-bottom:1em"
-      disabled={loading}
+      disabled={loading ||
+        (players[turn % players.length] != my_index && selected.length == 0)}
       onclick={() => {
         const is_current_judge = players[turn % players.length] == my_index;
         if (is_current_judge) {
@@ -76,7 +70,7 @@
           button_text = 'Loading...';
           fetch(
             url +
-              `━ Black card ━━━━━━━━ %0A%0A ${shuffle(blackCards, seed)[turn].text} %0A%0A ━━━━━━━━━ ▪️`
+              `━ Black card ━━━━━━━━%0A%0A${shuffle(blackCards, seed)[turn].text}%0A%0A ━━━━━━━━━`
           )
             .then((j) => j.json())
             .then((re) => {
@@ -105,7 +99,7 @@
           card = selected.join('%0A%0A');
         }
 
-        fetch(url + `╌ White card ╌╌╌╌╌╌ %0A%0A ${card} %0A%0A ╌╌╌╌╌╌╌╌╌◽`)
+        fetch(url + `💭 White card %0A%0A${card}%0A%0A`)
           .then((j) => j.json())
           .then((r) => {
             if (r.ok) {
@@ -116,9 +110,8 @@
               selected = [];
               turn += 1;
               localStorage.setItem('turn-index', JSON.stringify(turn));
-              if (players[turn % players.length] == my_index) {
-                button_text = 'Next turn';
-              }
+
+              button_text = 'Send Card';
             } else {
               loading = false;
               button_text = 'Send Card';
@@ -144,7 +137,6 @@
 
   #helper-text {
     text-align: start;
-    margin-top: 2.5em;
     margin-bottom: 1.2em;
   }
   .white-card {
