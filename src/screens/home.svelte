@@ -1,8 +1,8 @@
 <script>
-  import { route } from '../navigation.svelte';
+  import { route, status } from '../navigation.svelte';
 </script>
 
-<div class="main-container">
+<div class="home">
   <h1 style=" text-align: left;">
     Cards <br />
     against
@@ -10,33 +10,44 @@
     humanity
   </h1>
 
-  <div id="footer">
+  <div>
     <button
+      class="full-width"
+      style="margin-bottom: 1em;"
       onclick={() => {
-        route.value = 'host-game';
+        route.value = 'setup';
+        status.value = 'host';
       }}
     >
       New Game
     </button>
-    <button onclick={() => (route.value = 'join-game')}>Join Game</button>
-    <span id="footer-text">Made with 💖</span>
+    <button
+      class="full-width"
+      style="margin-bottom: 1.5em;"
+      onclick={() => {
+        route.value = 'setup';
+        status.value = 'join';
+      }}
+    >
+      Join Game
+    </button>
+    <span id="tag">Made with ❤️ Version 1.1.1</span>
   </div>
 </div>
 
 <style>
-  .main-container {
+  .home {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  #footer {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-  }
-  #footer-text {
-    color: #f9fafb;
+  #tag {
     font-size: x-small;
     align-self: flex-end;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 99;
   }
 </style>

@@ -5,16 +5,18 @@
   font-style: normal;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  /* background-color: #0c1214; */
+  color: #0c1214;
+
   --black-card-text: white;
   --black-card-helper-text: #d1d5db;
   --white-card-background: #fafaf9;
-  --test: #646cff;
+  --shadow: #9ca3af;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  color-scheme: light only;
 }
 
 a {
@@ -26,11 +28,15 @@ a:hover {
   color: #535bf2;
 }
 
+html,
 body {
+  height: 100%;
+  width: 100%;
   margin: 0;
+}
+
+body {
   display: flex;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -43,11 +49,11 @@ h1 {
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 1em;
-  text-align: center;
+  flex: 1;
   display: flex;
+  margin: 0;
+  min-width: 320px;
+  padding: 1em;
 }
 
 button {
@@ -60,7 +66,6 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-  width: 85vw;
 }
 button:hover {
   border-color: #646cff;
@@ -70,14 +75,14 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #0c1214;
     background-color: #ffffff;
     --black-card-text: #0c1214;
     --black-card-helper-text: #374151;
     --white-card-background: #f5f5f4;
-    --test: #646cff;
+    --shadow: #000;
   }
   a:hover {
     color: #747bff;
@@ -85,28 +90,44 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
 
-.input {
-  padding: 6px 12px;
-  background: rgb(31, 32, 35);
-  border: 1px solid rgb(60, 63, 68);
-  border-radius: 4px;
-  font-size: 13px;
-  color: rgb(247, 248, 248);
-  appearance: none;
-  transition: border 0.15s ease 0s;
-  /* testing */
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 100%;
-}
-.input:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: rgb(100, 153, 255);
-}
 p {
   text-align: start;
+  margin: 0;
+}
+
+.full-width {
+  width: auto;
+  min-width: 100%;
+  min-height: 6vh;
+  text-transform: capitalize;
+}
+
+button {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #000;
+  background-color: #f8fafc;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px,
+    5px 5px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+@media (min-width: 768px) {
+  button {
+    padding: 0.25em 0.75em;
+  }
+}
+button[disabled='disabled'],
+button:disabled {
+  color: #9ca3af;
 }

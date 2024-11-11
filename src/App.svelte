@@ -4,12 +4,13 @@
   import { route } from './navigation.svelte';
   import { fade } from 'svelte/transition';
   import Home from './screens/home.svelte';
-  import HostGame from './screens/host-game.svelte';
-  import JoinGame from './screens/join-game.svelte';
+  import Setup from './screens/setup.svelte';
   import Game from './screens/game.svelte';
 </script>
 
 <svelte:head>
+  <title>Cards Against Humanity</title>
+  <meta name="color-scheme" content="light only" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -17,20 +18,11 @@
     rel="stylesheet"
   />
 </svelte:head>
-<main>
-  {#if route.value == 'home'}
-    <Home />
-  {:else if route.value == 'host-game'}
-    <HostGame />
-  {:else if route.value == 'join-game'}
-    <JoinGame />
-  {:else if route.value == 'game'}
-    <Game />
-  {/if}
-</main>
 
-<style>
-  main {
-    display: flex;
-  }
-</style>
+{#if route.value == 'home'}
+  <Home />
+{:else if route.value == 'setup'}
+  <Setup />
+{:else if route.value == 'game'}
+  <Game />
+{/if}
